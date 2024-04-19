@@ -25,4 +25,14 @@ ggsave("fs_plot.pdf", plot = FS, device = "pdf")
 # Filtering
 Seurat_obj <- subset(Seurat_obj, subset = nFeature_RNA > 200 & nFeature_RNA < 10000 & MT_percent < 5)
 
+# Normalization
+Seurat_obj <- NormalizeData(Seurat_obj)
 
+# Highly variable features
+Seurat_obj <- FindVariableFeatures(Seurat_obj, selection.method = "vst", nfeatures = 2000)
+topfeatures <- head(VariableFeatures(Seurat_obj), 10)
+topfeatures
+
+featuresplot <- VariableFeaturePlot(Seurat_obj)
+topfeaturesplot <- LabelPoints(plot = featuresplot, points = topfeatures, repel = TRUE)
+ggsave("featuresplot.pdf", plot = topfeaturesplot, device = "pdf", height = 6, width = 18)
