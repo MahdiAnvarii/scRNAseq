@@ -13,5 +13,11 @@ nrow(Seurat_obj)
 ncol(Seurat_obj)
 view(Seurat_obj@meta.data)
 
+# QC
 Seurat_obj[["MT_percent"]] <- PercentageFeatureSet(Seurat_obj , patter = "^MT-")
 view(Seurat_obj@meta.data)
+
+vln <- VlnPlot(Seurat_obj, features = c("nCount_RNA","nFeature_RNA","MT_percent"), ncol=3)
+ggsave("vln_plot.pdf", plot = vln, device = "pdf")
+FS <- FeatureScatter(Seurat_obj, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") + geom_smooth(method = 'lm')
+ggsave("fs_plot.pdf", plot = FS, device = "pdf")
