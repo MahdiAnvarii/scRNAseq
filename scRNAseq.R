@@ -28,11 +28,40 @@ Seurat_obj <- subset(Seurat_obj, subset = nFeature_RNA > 200 & nFeature_RNA < 10
 # Normalization
 Seurat_obj <- NormalizeData(Seurat_obj)
 
-# Highly variable features
+# Collect highly variable features
 Seurat_obj <- FindVariableFeatures(Seurat_obj, selection.method = "vst", nfeatures = 2000)
 topfeatures <- head(VariableFeatures(Seurat_obj), 10)
 topfeatures
 
 featuresplot <- VariableFeaturePlot(Seurat_obj)
 topfeaturesplot <- LabelPoints(plot = featuresplot, points = topfeatures, repel = TRUE)
-ggsave("featuresplot.pdf", plot = topfeaturesplot, device = "pdf", height = 6, width = 18)
+ggsave("features_plot.pdf", plot = topfeaturesplot, device = "pdf", height = 6, width = 18)
+
+# Scaling
+Genes <- rownames(Seurat_obj)
+Genes
+Seurat_obj <- ScaleData(Seurat_obj, features = Genes)
+
+view(Seurat_obj@assays$RNA$counts)
+view(Seurat_obj@assays$RNA$data)
+view(Seurat_obj@assays$RNA$scale.data)
+
+# PCA
+Seurat_obj <- RunPCA(Seurat_obj, features = VariableFeatures(Seurat_obj))
+
+print(Seurat_obj[["pca"]], dims = 1:10 , nfeatures = 5)
+elbowplot <- ElbowPlot(Seurat_obj)
+ggsave("elbow_plot.pdf", plot = elbowplot, device = "pdf")
+
+# Clustering
+Seurat_obj <- FindNeighbors(Seurat_obj, dims = 1:20)
+Seurat_obj <- FindClusters(Seurat_obj,resolution = c(0.01,0.1,0.3,0.5))
+view(Seurat_obj@meta.data)
+
+DimPlot(Seurat_obj, group.by = "RNA_snn_res.0.1", label = TRUE)
+Idents(Seurat_obj) <- "RNA_snn_res.0.1"
+
+# Non-Linear
+Seurat_obj <- RunUMAP(Seurat_obj , dims = 1:20)
+dimplot <- DimPlot(Seurat_obj, reduction = "umap")
+ggsave("dim_plot.pdf", plot = dimplot, device = "pdf")
