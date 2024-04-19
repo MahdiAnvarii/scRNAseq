@@ -21,3 +21,8 @@ vln <- VlnPlot(Seurat_obj, features = c("nCount_RNA","nFeature_RNA","MT_percent"
 ggsave("vln_plot.pdf", plot = vln, device = "pdf")
 FS <- FeatureScatter(Seurat_obj, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") + geom_smooth(method = 'lm')
 ggsave("fs_plot.pdf", plot = FS, device = "pdf")
+
+# Filtering
+Seurat_obj <- subset(Seurat_obj, subset = nFeature_RNA > 200 & nFeature_RNA < 10000 & MT_percent < 5)
+
+
