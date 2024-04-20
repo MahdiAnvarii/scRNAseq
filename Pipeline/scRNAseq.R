@@ -55,11 +55,11 @@ ggsave("elbow_plot.pdf", plot = elbowplot, device = "pdf")
 
 # Clustering
 Seurat_obj <- FindNeighbors(Seurat_obj, dims = 1:20)
-Seurat_obj <- FindClusters(Seurat_obj,resolution = c(0.01,0.1,0.3,0.5))
+Seurat_obj <- FindClusters(Seurat_obj,resolution = c(0.01,0.02,0.05,0.1))
 view(Seurat_obj@meta.data)
 
 DimPlot(Seurat_obj, group.by = "RNA_snn_res.0.1", label = TRUE)
-Idents(Seurat_obj) <- "RNA_snn_res.0.1"
+Idents(Seurat_obj) <- "RNA_snn_res.0.02"
 
 # Non-Linear
 Seurat_obj <- RunUMAP(Seurat_obj , dims = 1:20)
