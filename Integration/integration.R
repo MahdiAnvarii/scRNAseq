@@ -53,6 +53,6 @@ merged_seurat_obj <- RunUMAP(merged_seurat_obj , dims = 1:20)
 dimplot1 <- DimPlot(merged_seurat_obj, reduction = "umap", group.by = 'patient')
 dimplot2 <- DimPlot(merged_seurat_obj, reduction = "umap", group.by = 'type')
 dimplot <- grid.arrange(dimplot1,dimplot2,ncol=2,nrow=2)
-ggsave("dim_plot.pdf", plot = dimplot, device = "pdf")
-## batch effect detected
+ggsave("dim_plot.pdf", plot = dimplot, device = "pdf", width = 18 , height = 12)
+## batch effect was detected
 
