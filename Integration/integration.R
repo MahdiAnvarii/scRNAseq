@@ -57,11 +57,34 @@ ggsave("dim_plot.pdf", plot = dimplot, device = "pdf", width = 18 , height = 12)
 ## batch effect was detected
 
 # Integration
-object.list <- SplitObject(merged_seurat_obj, split.by = 'patient')
-str(object.list)
-for(i in 1:length(object.list)){
-  object.list[[i]] <- NormalizeData(object = object.list[[i]])
-  object.list[[i]] <- FindVariableFeatures(object = object.list[[i]])
+obj.list <- SplitObject(merged_seurat_obj, split.by = 'patient')
+str(obj.list)
+for(i in 1:length(obj.list)){
+  obj.list[[i]] <- NormalizeData(object = obj.list[[i]])
+  obj.list[[i]] <- FindVariableFeatures(object = obj.list[[i]])
 }
 
+# Integration features selection
+features <- SelectIntegrationFeatures(object.list = obj.list)
+features
+
+# Find integration anchors (CCA method)
+anchors <- FindIntegrationAnchors(object.list = obj.list, anchor.features = features)
+
+# Integrate data
+integrated_seurat_obj <- IntegrateData(anchorset = anchors)
+
+# Scaling
+integrated_seurat_obj <- ScaleData(object = integrated_seurat_obj)
+# PCA
+integrated_seurat_obj <- RunPCA(object = integrated_seurat_obj)
+# Clustering
+integrated_seurat_obj <- FindNeighbors(object = integrated_seurat_obj, dims = 1:20)
+integrated_seurat_obj <- FindClusters(object = integrated_seurat_obj)
+# Non-Linear
+integrated_seurat_obj <- RunUMAP(integrated_seurat_obj , dims = 1:20)
+dimplot3 <- DimPlot(integrated_seurat_obj, reduction = "umap", group.by = 'patient')
+dimplot4 <- DimPlot(integrated_seurat_obj, reduction = "umap", group.by = 'type')
+dimplot <- grid.arrange(dimplot3,dimplot4,ncol=2,nrow=2)
+ggsave("integrated_dim_plot.pdf", plot = dimplot, device = "pdf", width = 18 , height = 12)
 
