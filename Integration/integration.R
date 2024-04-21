@@ -45,8 +45,14 @@ merged_seurat_obj <- ScaleData(object = merged_seurat_obj)
 merged_seurat_obj <- RunPCA(object = merged_seurat_obj)
 elbowplot <- ElbowPlot(merged_seurat_obj)
 ggsave("elbow_plot.pdf", plot = elbowplot, device = "pdf")
-
-
-
-
+# Clustering
+merged_seurat_obj <- FindNeighbors(object = merged_seurat_obj, dims = 1:20)
+merged_seurat_obj <- FindClusters(object = merged_seurat_obj)
+# Non-Linear
+merged_seurat_obj <- RunUMAP(merged_seurat_obj , dims = 1:20)
+dimplot1 <- DimPlot(merged_seurat_obj, reduction = "umap", group.by = 'patient')
+dimplot2 <- DimPlot(merged_seurat_obj, reduction = "umap", group.by = 'type')
+dimplot <- grid.arrange(dimplot1,dimplot2,ncol=2,nrow=2)
+ggsave("dim_plot.pdf", plot = dimplot, device = "pdf")
+## batch effect detected
 
