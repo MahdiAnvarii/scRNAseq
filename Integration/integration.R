@@ -19,3 +19,13 @@ merged_seurat_obj <- merge(HB17_background, y=c(HB17_PDX,HB17_tumor,HB30_PDX,HB3
       add.cell.ids = ls()[3:9],
       project = "HB")
 merged_seurat_obj
+view(merged_seurat_obj@meta.data)
+merged_seurat_obj$sample <- rownames(merged_seurat_obj@meta.data)
+merged_seurat_obj@meta.data <- separate(merged_seurat_obj@meta.data, col = 'sample', into = c('patient','type','barcode'), sep = '_')
+view(merged_seurat_obj@meta.data)
+unique(merged_seurat_obj@meta.data$patient)
+unique(merged_seurat_obj@meta.data$type)
+
+
+
+
