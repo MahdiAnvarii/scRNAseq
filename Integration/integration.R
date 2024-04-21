@@ -34,9 +34,17 @@ view(merged_seurat_obj@meta.data)
 merged_seurat_obj <- subset(merged_seurat_obj, subset = nFeature_RNA > 500 & nCount_RNA > 800 & MT_percent < 10)
 view(merged_seurat_obj@meta.data)
 
-
-
-
+### Checking batch effect
+# Normalization
+merged_seurat_obj <- NormalizeData(object = merged_seurat_obj)
+# Collect highly variable features
+merged_seurat_obj <- FindVariableFeatures(object = merged_seurat_obj)
+# Scaling
+merged_seurat_obj <- ScaleData(object = merged_seurat_obj)
+# PCA
+merged_seurat_obj <- RunPCA(object = merged_seurat_obj)
+elbowplot <- ElbowPlot(merged_seurat_obj)
+ggsave("elbow_plot.pdf", plot = elbowplot, device = "pdf")
 
 
 
