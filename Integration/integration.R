@@ -13,3 +13,9 @@ for(i in folders){
   name <- gsub('_filtered_feature_bc_matrix','',i)
   assign(name, CreateSeuratObject(counts = cts))
 }
+
+# Merge datassets
+merged_seurat_obj <- merge(HB17_background, y=c(HB17_PDX,HB17_tumor,HB30_PDX,HB30_tumor,HB53_background,HB53_tumor),
+      add.cell.ids = ls()[3:9],
+      project = "HB")
+merged_seurat_obj
