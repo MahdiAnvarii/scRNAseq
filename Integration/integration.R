@@ -30,6 +30,9 @@ unique(merged_seurat_obj@meta.data$type)
 merged_seurat_obj[["MT_percent"]] <- PercentageFeatureSet(merged_seurat_obj , patter = "^MT-")
 view(merged_seurat_obj@meta.data)
 
+# Filtering
+merged_seurat_obj <- subset(merged_seurat_obj, subset = nFeature_RNA > 500 & nCount_RNA > 800 & MT_percent < 10)
+view(merged_seurat_obj@meta.data)
 
 
 
