@@ -56,3 +56,12 @@ dimplot <- grid.arrange(dimplot1,dimplot2,ncol=2,nrow=2)
 ggsave("dim_plot.pdf", plot = dimplot, device = "pdf", width = 18 , height = 12)
 ## batch effect was detected
 
+# Integration
+object.list <- SplitObject(merged_seurat_obj, split.by = 'patient')
+str(object.list)
+for(i in 1:length(object.list)){
+  object.list[[i]] <- NormalizeData(object = object.list[[i]])
+  object.list[[i]] <- FindVariableFeatures(object = object.list[[i]])
+}
+
+
