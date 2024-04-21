@@ -26,6 +26,16 @@ view(merged_seurat_obj@meta.data)
 unique(merged_seurat_obj@meta.data$patient)
 unique(merged_seurat_obj@meta.data$type)
 
+# QC
+merged_seurat_obj[["MT_percent"]] <- PercentageFeatureSet(merged_seurat_obj , patter = "^MT-")
+view(merged_seurat_obj@meta.data)
+
+
+
+
+
+
+
 
 
 
