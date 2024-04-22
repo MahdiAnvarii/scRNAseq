@@ -19,3 +19,7 @@ str(Seurat_obj)
 nrow(Seurat_obj)
 ncol(Seurat_obj)
 view(Seurat_obj@meta.data)
+
+# QC
+Seurat_obj[["MT_percent"]] <- PercentageFeatureSet(Seurat_obj , patter = "^MT-")
+view(Seurat_obj@meta.data)
