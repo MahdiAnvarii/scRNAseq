@@ -23,3 +23,10 @@ view(Seurat_obj@meta.data)
 # QC
 Seurat_obj[["MT_percent"]] <- PercentageFeatureSet(Seurat_obj , patter = "^MT-")
 view(Seurat_obj@meta.data)
+
+# Filtering
+Seurat_obj <- subset(Seurat_obj, subset = nFeature_RNA > 500 & nCount_RNA > 800 & MT_percent < 10)
+str(Seurat_obj)
+nrow(Seurat_obj)
+ncol(Seurat_obj)
+view(Seurat_obj@meta.data)
