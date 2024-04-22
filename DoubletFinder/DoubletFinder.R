@@ -67,6 +67,11 @@ homotypic_prop <- modelHomotypic(annotation)
 expected <- round(0.076*nrow(Seurat_obj@meta.data))
 expected_adj <- round(expected*(1-homotypic_prop))
 
+# Finding doublets
 
-
-
+Seurat_obj <- doubletFinder(Seurat_obj, PCs = 1:20, pN = 0.25, pK = pK,
+              nExp = expected_adj, reuse.pANN = FALSE, sct = FALSE)
+view(Seurat_obj@meta.data)
+dimplot <- DimPlot(Seurat_obj, reduction = "umap", group.by = 'DF.classifications_0.25_0.26_691')
+ggsave("dim_plot.pdf", plot = dimplot, device = "pdf", width = 7 , height = 5)
+table(Seurat_obj@meta.data$DF.classifications_0.25_0.26_691)
