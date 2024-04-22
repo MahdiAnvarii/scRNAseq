@@ -61,5 +61,12 @@ ggsave("pK_values_plot.pdf", plot = pkval, device = "pdf", width = 16 , height =
 pK <- bcmvn %>% filter(BCmetric == max(BCmetric)) %>% select(pK)
 pK <- as.numeric(as.character(pK[[1]]))
 
+# Homotypic doublet proportion estimating
+annotation <- Seurat_obj@meta.data$seurat_clusters
+homotypic_prop <- modelHomotypic(annotation)
+expected <- round(0.076*nrow(Seurat_obj@meta.data))
+expected_adj <- round(expected*(1-homotypic_prop))
+
+
 
 
