@@ -30,3 +30,20 @@ str(Seurat_obj)
 nrow(Seurat_obj)
 ncol(Seurat_obj)
 view(Seurat_obj@meta.data)
+
+### Preprocess workflow
+# Normalization
+Seurat_obj <- NormalizeData(object = Seurat_obj)
+# Collect highly variable features
+Seurat_obj <- FindVariableFeatures(object = Seurat_obj)
+# Scaling
+Seurat_obj <- ScaleData(object = Seurat_obj)
+# PCA
+Seurat_obj <- RunPCA(object = Seurat_obj)
+elbowplot <- ElbowPlot(Seurat_obj)
+ggsave("elbow_plot.pdf", plot = elbowplot, device = "pdf")
+# Clustering
+Seurat_obj <- FindNeighbors(object = Seurat_obj, dims = 1:20)
+Seurat_obj <- FindClusters(object = Seurat_obj)
+# Non-Linear
+Seurat_obj <- RunUMAP(Seurat_obj , dims = 1:20)
