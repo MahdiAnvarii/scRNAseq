@@ -58,5 +58,8 @@ view(bcmvn)
 pkval <- ggplot(bcmvn, aes(pK, BCmetric, group = 1))+ geom_point() + geom_line()
 ggsave("pK_values_plot.pdf", plot = pkval, device = "pdf", width = 16 , height = 10)
 
+pK <- bcmvn %>% filter(BCmetric == max(BCmetric)) %>% select(pK)
+pK <- as.numeric(as.character(pK[[1]]))
+
 
 
