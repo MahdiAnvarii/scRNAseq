@@ -1,6 +1,7 @@
 library(Seurat)
 library(tidyverse)
 library(ggplot2)
+library(harmony)
 library(devtools)
 devtools::install_github('satijalab/seurat-data')
 library(SeuratData)
@@ -38,4 +39,5 @@ ggsave("elbow_plot.pdf", plot = elbowplot, device = "pdf")
 # Non-Linear
 ifnb.updated <- RunUMAP(ifnb.updated , dims = 1:20 , reduction = 'pca')
 dimplot <- DimPlot(ifnb.updated, reduction = "umap", group.by = 'stim')
-ggsave("dim_plot.pdf", plot = dimplot, device = "pdf")
+ggsave("before_dim_plot.pdf", plot = dimplot, device = "pdf")
+
