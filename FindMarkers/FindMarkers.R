@@ -74,4 +74,19 @@ AllMarkers <- FindAllMarkers(ifnb.harmony,
                only.pos = TRUE,
                test.use = 'DESeq2',
                slot = 'counts')
+str(AllMarkers)
+view(AllMarkers)
+
+install.packages('metap')
+library(BiocManager)
+BiocManager::install('multtest')
+library(metap)
+library(multtest)
+# find conserved markers
+markers_cluster3 <- FindConservedMarkers(ifnb.harmony,
+                                         ident.1 = 3,
+                                         grouping.var = 'stim')
+head(markers_cluster3)
+view(markers_cluster3)
+
 
