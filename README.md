@@ -8,3 +8,5 @@
  Data for "DoubletFinder" folder:  
  https://cf.10xgenomics.com/samples/cell-exp/6.1.0/10k_PBMC_3p_nextgem_Chromium_Controller/10k_PBMC_3p_nextgem_Chromium_Controller_raw_feature_bc_matrix.tar.gz  
  
+ Data for "FindMarkers" folder:  
+ https://seurat.nygenome.org/src/contrib/ifnb.SeuratData_3.0.0.tar.gz  
