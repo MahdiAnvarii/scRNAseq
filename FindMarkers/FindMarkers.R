@@ -89,4 +89,16 @@ markers_cluster3 <- FindConservedMarkers(ifnb.harmony,
 head(markers_cluster3)
 view(markers_cluster3)
 
+FCGR3A <- FeaturePlot(ifnb.harmony, features = c('FCGR3A'), min.cutoff = 'q10')
+ggsave("FCGR3A_dim_plot.pdf", plot = cc, device = "pdf")
 
+head(Idents(ifnb.harmony))
+ifnb.harmony <- RenameIdents(ifnb.harmony, '3' = 'CD16 Mono')
+head(Idents(ifnb.harmony))
+#single cell signature database, PanglaoDB, CellMarker
+DimPlot(ifnb.harmony, reduction = 'umap' , label = T)
+
+Idents(ifnb.harmony) <- ifnb.harmony@meta.data$seurat_annotations
+head(Idents(ifnb.harmony))
+CellTypes <- DimPlot(ifnb.harmony, reduction = 'umap' , label = T)
+ggsave("cell_types_dim_plot.pdf", plot = CellTypes, device = "pdf", width = 16 , height = 10)
