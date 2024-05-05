@@ -57,3 +57,21 @@ ifnb.harmony <- ifnb.harmony %>%
 dimplot2 <- DimPlot(ifnb.harmony, reduction = "umap", group.by = 'stim')
 ggsave("after_dim_plot.pdf", plot = dimplot2, device = "pdf", width = 16 , height = 10)
 dimplot|dimplot2
+
+view(ifnb.harmony@meta.data)
+clusters <- DimPlot(ifnb.harmony, reduction = 'umap' , group.by = 'seurat_clusters', label = TRUE)
+ggsave("clusters_dim_plot.pdf", plot = clusters, device = "pdf")
+conditions <- DimPlot(ifnb.harmony, reduction = 'umap' , group.by = 'stim')
+ggsave("conditions_dim_plot.pdf", plot = conditions, device = "pdf")
+cc <- conditions|clusters
+ggsave("conditions_clusters_dim_plot.pdf", plot = cc, device = "pdf", width = 16 , height = 10)
+
+# to identify cell types that form each cluster
+# find all markers
+AllMarkers <- FindAllMarkers(ifnb.harmony,
+               logfc.threshold = 0.25,
+               min.pct = 0.3,
+               only.pos = TRUE,
+               test.use = 'DESeq2',
+               slot = 'counts')
+
