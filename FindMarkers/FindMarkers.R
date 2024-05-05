@@ -102,3 +102,18 @@ Idents(ifnb.harmony) <- ifnb.harmony@meta.data$seurat_annotations
 head(Idents(ifnb.harmony))
 CellTypes <- DimPlot(ifnb.harmony, reduction = 'umap' , label = T)
 ggsave("cell_types_dim_plot.pdf", plot = CellTypes, device = "pdf", width = 16 , height = 10)
+
+# consider conditions
+ifnb.harmony$condition <- paste0(ifnb.harmony$seurat_annotations,'_',ifnb.harmony$stim)
+view(ifnb.harmony@meta.data)
+
+Idents(ifnb.harmony) <- ifnb.harmony$condition
+DimPlot(ifnb.harmony, reduction = 'umap' , label = T)
+
+# find markers
+CD16MonoResponse <- FindMarkers(ifnb.harmony, ident.1 = 'CD16 Mono_STIM' , ident.2 = 'CD16 Mono_CTRL')
+head(CD16MonoResponse)
+head(markers_cluster3)
+
+FCGR3A_IFIT1 <- FeaturePlot(ifnb.harmony, features = c('FCGR3A','IFIT1'), split.by = 'stim', min.cutoff = 'q10')
+ggsave("FCGR3A_IFIT1_dim_plot.pdf", plot = FCGR3A_IFIT1, device = "pdf", width = 18 , height = 12)
