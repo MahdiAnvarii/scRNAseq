@@ -85,3 +85,23 @@ cts.split.modified <- lapply(cts.split, function(x){
   t(x)
 })
 cts.split.modified$`B cells`[1:10,1:10]
+
+# Run DESeq2 for B cells
+BcellsCountMatrix <- cts.split.modified$`B cells`
+view(BcellsCountMatrix)
+BcellsMetadata <- data.frame(samples = colnames(BcellsCountMatrix))
+view(BcellsMetadata)
+BcellsMetadata <- BcellsMetadata %>%
+  mutate(condition = ifelse(grepl('stim', samples), 'stim' , 'ctrl')) %>%
+  column_to_rownames(var = 'samples')
+view(BcellsMetadata)
+
+dds <- DESeqDataSetFromMatrix(countData = BcellsCountMatrix,
+                       colData = BcellsMetadata,
+                       design = ~ condition)
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+dds <- DESeq(dds)
+resultsNames(dds)
+res <- results(dds, name = "condition_stim_vs_ctrl")
+res
