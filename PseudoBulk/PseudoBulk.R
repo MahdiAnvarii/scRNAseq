@@ -1,0 +1,10 @@
+library(Seurat)
+library(DESeq2)
+library(tidyverse)
+library(devtools)
+setRepositories()
+install.packages("ExperimentHub")
+install.packages("AnnotationHub")
+library(AnnotationHub)
+library(ExperimentHub)
+
