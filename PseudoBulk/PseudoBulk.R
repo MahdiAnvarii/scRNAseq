@@ -52,3 +52,18 @@ dimplot2 <- DimPlot(Seurat_obj, reduction = "umap", group.by = 'stim')
 ggsave("conditions_dim_plot.pdf", plot = dimplot2, device = "pdf", width = 16 , height = 10)
 cc <- dimplot1|dimplot2
 ggsave("conditions_clusters_dim_plot.pdf", plot = cc, device = "pdf", width = 16 , height = 10)
+
+#PseudoBulk workflow
+view(Seurat_obj@meta.data)
+Seurat_obj$sample <- paste0(Seurat_obj$ind, "_" , Seurat_obj$stim)
+view(Seurat_obj@meta.data)
+DefaultAssay(Seurat_obj)
+
+#count aggregate to sample level
+cts <- AggregateExpression(Seurat_obj,
+                    group.by = c('cell' , 'sample'),
+                    assays = "originalexp",
+                    slot = "counts",
+                    return.seurat = FALSE)
+cts <- cts$originalexp
+view(cts)
