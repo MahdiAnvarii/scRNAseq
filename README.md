@@ -14,3 +14,9 @@
  library(ifnb.SeuratData)  
  InstallData("ifnb")  
  data("ifnb")  
+
+ Data for "PseudoBulk" folder:  
+ library(ExperimentHub)  
+ experimenthub = ExperimentHub(localHub=FALSE)  
+ query(experimenthub,"Kang")  
+ sce_obj <- experimenthub[['EH2259']]  
