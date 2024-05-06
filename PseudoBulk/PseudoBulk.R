@@ -67,3 +67,21 @@ cts <- AggregateExpression(Seurat_obj,
                     return.seurat = FALSE)
 cts <- cts$originalexp
 view(cts)
+
+cts.t <- t(cts)
+cts.t <- as.data.frame(cts.t)
+cts.t[1:10,1:10]
+SplitRows <- gsub('_.*','',rownames(cts.t))
+SplitRows
+
+# Split data frame
+cts.split <- split.data.frame(cts.t, f = factor(SplitRows))
+cts.split$`B cells`[1:10,1:10]
+
+# Fix columns and retranspose
+gsub('.*_(.*)','\\1','B cells_101-ctrl')
+cts.split.modified <- lapply(cts.split, function(x){
+  rownames(x) <- gsub('.*_(.*)','\\1',rownames(x))
+  t(x)
+})
+cts.split.modified$`B cells`[1:10,1:10]
