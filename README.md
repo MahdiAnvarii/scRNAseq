@@ -20,3 +20,8 @@
  experimenthub = ExperimentHub(localHub=FALSE)  
  query(experimenthub,"Kang")  
  sce_obj <- experimenthub[['EH2259']]  
+
+ Data for "Trajectory" folder:  
+ http://scrna.sklehabc.com/session/70521e3f05de2335e17476d2de37e179/download/download.umi?w=  
+ http://scrna.sklehabc.com/session/70521e3f05de2335e17476d2de37e179/download/download.marker?w=  
+ http://scrna.sklehabc.com/session/70521e3f05de2335e17476d2de37e179/download/download.meta?w=  
