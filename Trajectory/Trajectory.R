@@ -14,3 +14,12 @@ expressions <- read.delim('../Data/ABC_umi_matrix_7551_cells.csv' , header = T ,
 head(markers)
 head(metadata)
 expressions[1:10,1:10]
+
+exp.t <- t(expressions)
+exp.t[1:10,1:10]
+Seurat_obj <- CreateSeuratObject(counts = exp.t)
+view(Seurat_obj@meta.data)
+Seurat_obj@meta.data <- merge(Seurat_obj@meta.data, metadata, by.x = 'row.names' , by.y = 'cell_id')
+view(Seurat_obj@meta.data)
+Seurat_obj@meta.data <- Seurat_obj@meta.data %>%
+  column_to_rownames(var = 'Row.names')
