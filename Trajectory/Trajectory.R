@@ -68,3 +68,12 @@ ggsave("clusters_dim_plot.pdf", plot = dimplot2, device = "pdf", width = 16 , he
 cc <- dimplot1|dimplot2
 ggsave("cellTypes_clusters_dim_plot.pdf", plot = cc, device = "pdf", width = 16 , height = 10)
 
+# Monocle3
+B_CDS <- as.cell_data_set(B_Seurat_obj) # Convert to cell_data_set object
+B_CDS
+str(B_CDS)
+colData(B_CDS) # Get cell metadata
+fData(B_CDS) # Get gene metadata
+fData(B_CDS)$gene_short_name <- rownames(fData(B_CDS))
+fData(B_CDS)
+counts(B_CDS) # Get counts
