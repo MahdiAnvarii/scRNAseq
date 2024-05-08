@@ -120,3 +120,30 @@ B_CDS <- order_cells(B_CDS , reduction_method = 'UMAP', root_cells = colnames(B_
 pseudotimePlot <- plot_cells(B_CDS, color_cells_by = 'pseudotime' , label_groups_by_cluster = F ,label_branch_points = F,
                               label_roots = F,label_leaves = F , group_label_size = 5)
 ggsave("pseudotime_plot.pdf", plot = pseudotimePlot, device = "pdf")
+
+# Pseudotime values
+pseudotime(B_CDS)
+B_CDS$pseudotime <- pseudotime(B_CDS)
+view(colData((B_CDS)))
+
+Pseudo_data <- as.data.frame(colData((B_CDS)))
+pseedo_box <- ggplot(Pseudo_data, aes(pseudotime, reorder(redefined_cluster,pseudotime,median) , fill = redefined_cluster)) +
+  geom_boxplot()
+ggsave("pseudotime_box_plot.pdf", plot = pseedo_box, device = "pdf", width = 16 , height = 10)
+
+# Find genes
+DEG4Bcells <- graph_test(B_CDS, neighbor_graph = 'principal_graph' , cores = 4)
+view(DEG4Bcells)
+DEG4Bcells %>%
+  arrange(q_value) %>%
+  filter(status == 'OK') %>%
+  head()
+
+fp <- FeaturePlot(B_Seurat_obj, features = c('STMN1','CD52','HMGN2','LAPTM5','CLSPN','CSF3R'))
+ggsave("features_plot.pdf", plot = fp, device = "pdf", width = 10 , height = 16)
+
+B_Seurat_obj$pseudotime <- pseudotime(B_CDS)
+Idents(B_Seurat_obj)
+Idents(B_Seurat_obj) <- B_Seurat_obj$redefined_cluster
+ptfp <- FeaturePlot(B_Seurat_obj, features = "pseudotime", label = T)
+ggsave("pseudotime_features_plot.pdf", plot = ptfp, device = "pdf", width = 16 , height = 10)
