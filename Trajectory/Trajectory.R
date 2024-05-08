@@ -103,3 +103,20 @@ celltypes <- plot_cells(B_CDS, color_cells_by = 'redefined_cluster' , label_grou
 
 cc <- clusters|celltypes
 ggsave("cellTypes_clusters_dim_plot_2.pdf", plot = cc, device = "pdf", width = 16 , height = 10)
+
+# Learn trajectory graph
+B_CDS <- learn_graph(B_CDS, use_partition = F)
+TrajectoryGraph <- plot_cells(B_CDS, color_cells_by = 'redefined_cluster' , label_groups_by_cluster = F ,label_branch_points = F,
+           label_roots = F,label_leaves = F , group_label_size = 5) +
+  theme(legend.position = 'right')
+ggsave("trajectory_graph_plot.pdf", plot = TrajectoryGraph, device = "pdf", width = 16 , height = 10)
+
+# Order cells in pseudotime
+colnames(B_CDS)
+rownames(B_CDS)
+colnames(B_CDS[,clusters(B_CDS) == 5])
+B_CDS <- order_cells(B_CDS , reduction_method = 'UMAP', root_cells = colnames(B_CDS[,clusters(B_CDS) == 5]))
+
+pseudotimePlot <- plot_cells(B_CDS, color_cells_by = 'pseudotime' , label_groups_by_cluster = F ,label_branch_points = F,
+                              label_roots = F,label_leaves = F , group_label_size = 5)
+ggsave("pseudotime_plot.pdf", plot = pseudotimePlot, device = "pdf")
