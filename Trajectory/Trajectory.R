@@ -77,3 +77,19 @@ fData(B_CDS) # Get gene metadata
 fData(B_CDS)$gene_short_name <- rownames(fData(B_CDS))
 fData(B_CDS)
 counts(B_CDS) # Get counts
+
+# Assign partitions
+B_CDS@clusters$UMAP$partitions
+B_CDS@colData@rownames
+partition <- c(rep(1,length(B_CDS@colData@rownames)))
+names(partition) <- B_CDS@colData@rownames
+partition <- as.factor(partition)
+partition
+B_CDS@clusters$UMAP$partitions <- partition
+
+# Assign cluster info
+B_Seurat_obj@active.ident
+B_CDS@clusters$UMAP$clusters <- B_Seurat_obj@active.ident
+
+# Assign UMAP info
+B_CDS@int_colData@listData$reducedDims$UMAP <- B_Seurat_obj@reductions$umap@cell.embeddings
