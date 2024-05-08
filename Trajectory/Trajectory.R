@@ -93,3 +93,13 @@ B_CDS@clusters$UMAP$clusters <- B_Seurat_obj@active.ident
 
 # Assign UMAP info
 B_CDS@int_colData@listData$reducedDims$UMAP <- B_Seurat_obj@reductions$umap@cell.embeddings
+
+
+clusters <- plot_cells(B_CDS, color_cells_by = 'cluster' , label_groups_by_cluster = F , group_label_size = 5) +
+  theme(legend.position = 'right')
+
+celltypes <- plot_cells(B_CDS, color_cells_by = 'redefined_cluster' , label_groups_by_cluster = F , group_label_size = 5) +
+  theme(legend.position = 'right')
+
+cc <- clusters|celltypes
+ggsave("cellTypes_clusters_dim_plot_2.pdf", plot = cc, device = "pdf", width = 16 , height = 10)
